@@ -40,7 +40,9 @@
 
 .. function:: time(t::TmStruct)
 
-   Converts a ``TmStruct`` struct to a number of seconds since the epoch.
+   ``time()``
+
+   Get the system time in seconds since the epoch, with fairly high (typically, microsecond) resolution.
 
 .. function:: strftime([format], time)
 
@@ -61,9 +63,9 @@
 
 .. function:: msync(ptr, len, [flags])
 
-   Forces synchronization of the :func:`mmap`\ ped memory region from ``ptr`` to ``ptr+len``. Flags defaults to ``MS_SYNC``, but can be a combination of ``MS_ASYNC``, ``MS_SYNC``, or ``MS_INVALIDATE``. See your platform man page for specifics. The flags argument is not valid on Windows.
+   ``msync(array)``
 
-   You may not need to call ``msync``, because synchronization is performed at intervals automatically by the operating system. However, you can call this directly if, for example, you are concerned about losing the result of a long-running calculation.
+   Forces synchronization between the in-memory version of a memory-mapped ``Array`` or ``BitArray`` and the on-disk version.
 
 .. data:: MS_ASYNC
 
@@ -84,3 +86,4 @@
 .. function:: munmap(pointer, len)
 
    Low-level interface for unmapping memory (see the man page). With :func:`mmap_array` you do not need to call this directly; the memory is unmapped for you when the array goes out of scope.
+
