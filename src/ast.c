@@ -1017,6 +1017,12 @@ static jl_value_t *resolve_globals(jl_value_t *expr, jl_lambda_info_t *lam)
                 jl_exprargset(e, i, resolve_globals(jl_exprarg(e,i), lam));
             }
         }
+        // resolve a global binding as soon as we lower an assignment to it
+        if (e->head == assign_sym) {
+            jl_value_t *v = jl_exprarg(e,0);
+            if (jl_is_globalref(v))
+                jl_get_binding_wr(jl_globalref_mod(v), jl_globalref_name(v));
+        }
     }
     return expr;
 }
