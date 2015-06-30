@@ -307,7 +307,6 @@ typedef struct {
     // not first-class
     jl_sym_t *name;
     jl_value_t *value;
-    jl_value_t *type;
     struct _jl_module_t *owner;  // for individual imported bindings
     unsigned constp:1;
     unsigned exportp:1;

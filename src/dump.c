@@ -489,7 +489,6 @@ static void jl_serialize_module(ios_t *s, jl_module_t *m)
             if (b->owner == m || m != jl_main_module) {
                 jl_serialize_value(s, b->name);
                 jl_serialize_value(s, b->value);
-                jl_serialize_value(s, b->type);
                 jl_serialize_value(s, b->owner);
                 write_int8(s, (b->constp<<2) | (b->exportp<<1) | (b->imported));
                 jl_serialize_gv(s, (jl_value_t*)b);
@@ -1241,8 +1240,6 @@ static jl_value_t *jl_deserialize_value_(ios_t *s, jl_value_t *vtag, jl_value_t 
             b->value = jl_deserialize_value(s, &b->value);
             jl_gc_wb_buf(m, b);
             if (b->value != NULL) jl_gc_wb(m, b->value);
-            b->type = jl_deserialize_value(s, &b->type);
-            jl_gc_wb(m, b->type);
             b->owner = (jl_module_t*)jl_deserialize_value(s, (jl_value_t**)&b->owner);
             if (b->owner != NULL) jl_gc_wb(m, b->owner);
             int8_t flags = read_int8(s);

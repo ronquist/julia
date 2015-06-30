@@ -70,7 +70,6 @@ static jl_binding_t *new_binding(jl_sym_t *name)
     jl_binding_t *b = (jl_binding_t*)allocb(sizeof(jl_binding_t));
     b->name = name;
     b->value = NULL;
-    b->type = (jl_value_t*)jl_any_type;
     b->owner = NULL;
     b->constp = 0;
     b->exportp = 0;
