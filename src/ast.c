@@ -992,10 +992,8 @@ static jl_value_t *resolve_globals(jl_value_t *expr, jl_lambda_info_t *lam)
         int is_local = in_vinfo_array(jl_lam_vinfo((jl_expr_t*)lam->ast), expr) ||
             in_vinfo_array(jl_lam_capt((jl_expr_t*)lam->ast), expr) ||
             in_sym_array(jl_lam_staticparams((jl_expr_t*)lam->ast), expr);
-        if (!is_local) {
-            //return jl_module_global_ref(lam->module, (jl_sym_t*)expr);
-            return jl_new_struct(jl_globalref_type, lam->module, (jl_sym_t*)expr);
-        }
+        if (!is_local)
+            return jl_module_globalref(lam->module, (jl_sym_t*)expr);
     }
     else if (jl_is_lambda_info(expr)) {
         jl_lambda_info_t *l = (jl_lambda_info_t*)expr;
@@ -1006,12 +1004,6 @@ static jl_value_t *resolve_globals(jl_value_t *expr, jl_lambda_info_t *lam)
         if (e->head == lambda_sym) {
             (void)resolve_globals(jl_exprarg(e,2), lam);
         }
-        /*
-        else if (e->head == assign_sym) {
-            jl_exprargset(e, 0, dont_copy_ast(jl_exprarg(e,0), sp, 0));
-            jl_exprargset(e, 1, dont_copy_ast(jl_exprarg(e,1), sp, 1));
-        }
-        */
         else if (jl_is_toplevel_only_expr(expr) || e->head == const_sym || e->head == copyast_sym ||
                  e->head == global_sym || e->head == quote_sym || e->head == inert_sym ||
                  e->head == line_sym || e->head == meta_sym) {

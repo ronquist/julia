@@ -1548,6 +1548,8 @@ NOINLINE static int gc_mark_module(jl_module_t *m, int d)
                 verify_parent2("module", m, &b->value, "binding(%s)", b->name->name);
                 refyoung |= gc_push_root(b->value, d);
             }
+            if (b->globalref != NULL)
+                refyoung |= gc_push_root(b->globalref, d);
         }
     }
     // this is only necessary because bindings for "using" modules
