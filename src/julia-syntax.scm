@@ -3229,7 +3229,11 @@ So far only the second case can actually occur.
                    (mark-label endl))
                ))
 
-            ((global) #f)  ; remove global declarations
+            ((global) ; remove global declarations
+             (let ((vname (cadr e)))
+               (if (var-info-for vname vi)
+                   (error (string "variable \"" vname "\" declared local in enclosing scope"))
+                   #f)))
             ((implicit-global) #f)
             ((local!) #f)
             ((jlgensym) #f)
